@@ -10,6 +10,7 @@ from .cuisines import router as cuisines_router
 from .ingredients import router as ingredients_router
 from .auth import router as auth_router
 from .users import router as users_router
+from .videos import router as videos_router
 
 
 
@@ -24,3 +25,4 @@ router.include_router(cuisines_router)
 router.include_router(ingredients_router)
 router.include_router(auth_router)
 router.include_router(users_router)
+router.include_router(videos_router)

@@ -11,6 +11,12 @@ from .recipe_schema import (
     CuisineRead as RecipeCuisineRead,
     AllergenRead as RecipeAllergenRead,
 )
+from .video_project_schema import (
+    VideoProjectRead,
+    VideoProjectCreate,
+    VideoProjectUploadResponse,
+    ImageSchema,
+)
 
 __all__ = [
     "PostRead",
@@ -28,4 +34,8 @@ __all__ = [
     "RecipeIngredientRead",
     "RecipeCuisineRead",
     "RecipeAllergenRead",
+    "VideoProjectRead",
+    "VideoProjectCreate",
+    "VideoProjectUploadResponse",
+    "ImageSchema",
 ]
