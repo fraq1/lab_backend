@@ -28,9 +28,8 @@ class AllergenService:
         """Update an existing allergen."""
         allergen = await self.repository.get_one(allergen_id)
         if not allergen:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Allergen with id {allergen_id} not found"
+            raise Exception(
+                f"Allergen with id {allergen_id} not found"
             )
 
         allergen.name = name
@@ -42,9 +41,8 @@ class AllergenService:
         """Delete an allergen."""
         allergen = await self.repository.get_one(allergen_id)
         if not allergen:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Allergen with id {allergen_id} not found"
+            raise Exception(
+                f"Allergen with id {allergen_id} not found"
             )
         await self.repository.delete(allergen)
         await self.uow.commit()

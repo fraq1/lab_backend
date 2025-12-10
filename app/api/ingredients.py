@@ -1,6 +1,6 @@
 from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, status, Query, HTTPException
-
+from include import parse_select_fields, parse_include
 from config.config import settings
 from services import IngredientService
 from queries import IngredientQueries
@@ -66,27 +66,9 @@ async def recipes_by_ingredient(
     ),
     queries: Annotated[IngredientQueries, Depends(IngredientQueries)] = None,
 ):
-    SELECTABLE_FIELDS = {"id", "title", "description", "cooking_time", "difficulty"}
-    if select_fields is not None:
-        select_set = {part.strip() for part in select_fields.split(",") if part.strip()}
-        invalid = select_set - SELECTABLE_FIELDS
-        if invalid:
-            raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail=f"Invalid fields: {', '.join(invalid)}. Allowed: {', '.join(SELECTABLE_FIELDS)}"
-            )
-    else:
-        select_set = SELECTABLE_FIELDS
+    
+    select_set = parse_select_fields(select_fields)
 
-    include_set = set()
-    if include:
-        include_set = {part.strip() for part in include.split(",") if part.strip()}
-    ALLOWED_INCLUDES = {"cuisine", "ingredients", "allergens"}
-    if not include_set.issubset(ALLOWED_INCLUDES):
-        invalid = include_set - ALLOWED_INCLUDES
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Invalid include values: {', '.join(invalid)}. Allowed: {', '.join(ALLOWED_INCLUDES)}"
-        )
+    include_set = parse_include(include)
 
     return await queries.get_recipes_by_ingredient(ingredient_id, include_set, select_set)

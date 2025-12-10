@@ -28,9 +28,8 @@ class CuisineService:
         """Update an existing cuisine."""
         cuisine = await self.repository.get_one(cuisine_id)
         if not cuisine:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Cuisine with id {cuisine_id} not found"
+            raise Exception(
+                f"Cuisine with id {cuisine_id} not found"
             )
 
         cuisine.name = name
@@ -42,9 +41,8 @@ class CuisineService:
         """Delete a cuisine."""
         cuisine = await self.repository.get_one(cuisine_id)
         if not cuisine:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Cuisine with id {cuisine_id} not found"
+            raise Exception(
+                f"Cuisine with id {cuisine_id} not found"
             )
         await self.repository.delete(cuisine)
         await self.uow.commit()

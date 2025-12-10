@@ -28,9 +28,8 @@ class IngredientService:
         """Update an existing ingredient."""
         ingredient = await self.repository.get_one(ingredient_id)
         if not ingredient:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Ingredient with id {ingredient_id} not found"
+            raise Exception(
+                f"Ingredient with id {ingredient_id} not found"
             )
 
         ingredient.name = name
@@ -42,9 +41,8 @@ class IngredientService:
         """Delete an ingredient."""
         ingredient = await self.repository.get_one(ingredient_id)
         if not ingredient:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Ingredient with id {ingredient_id} not found"
+            raise Exception(
+                f"Ingredient with id {ingredient_id} not found"
             )
         await self.repository.delete(ingredient)
         await self.uow.commit()

@@ -11,6 +11,7 @@ from fastapi.security import OAuth2PasswordBearer
 from taskiq_broker import broker
 import taskiq_fastapi
 from tasks import generate_video_task  # noqa: F401
+from exceptions import setup_exception_handlers
 
 
 @asynccontextmanager
@@ -51,7 +52,7 @@ add_pagination(app)
 
 # Mount static files for media
 app.mount("/media", StaticFiles(directory="media"), name="media")
-
+setup_exception_handlers(main_app)
 
 if __name__ == "__main__":
     uvicorn.run(

@@ -40,9 +40,9 @@ class RecipeService:
         """Create a new recipe."""
         cuisine = await self.cuisine_repository.get_one(cuisine_id)
         if not cuisine:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Cuisine with id {cuisine_id} not found"
+            # 
+            raise Exception(
+                f"Cuisine with id {cuisine_id} not found"
             )
 
         recipe = Recipe(
@@ -64,9 +64,8 @@ class RecipeService:
         for ri_data in ingredients:
             ingredient = await self.ingredient_repository.get_one(ri_data.ingredient_id)
             if not ingredient:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Ingredient with id {ri_data.ingredient_id} not found"
+                raise Exception(
+                    f"Ingredient with id {ri_data.ingredient_id} not found"
                 )
 
             recipe_ingredient = RecipeIngredient(
@@ -94,15 +93,13 @@ class RecipeService:
         """Update an existing recipe."""
         recipe = await self.repository.get_recipe_by_id_with_relations(recipe_id)
         if not recipe:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Recipe with id {recipe_id} not found"
+            raise Exception(
+                f"Recipe with id {recipe_id} not found"
             )
 
         if recipe.author_id != current_user.id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Not authorized to update this recipe"
+            raise Exception(
+                "Not authorized to update this recipe"
             )
 
         recipe.title = title
@@ -113,9 +110,8 @@ class RecipeService:
         if cuisine_id != (recipe.cuisine.id if recipe.cuisine else None):
             cuisine = await self.cuisine_repository.get_one(cuisine_id)
             if not cuisine:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Cuisine not found"
+                raise Exception(
+                    "Cuisine not found"
                 )
             recipe.cuisine = cuisine
 
@@ -131,15 +127,13 @@ class RecipeService:
         """Delete a recipe."""
         recipe = await self.repository.get_one(recipe_id)
         if not recipe:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Recipe with id {recipe_id} not found"
+            raise Exception(
+                f"Recipe with id {recipe_id} not found"
             )
 
         if recipe.author_id != current_user.id:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Not authorized to delete this recipe"
+            raise Exception(
+                "Not authorized to delete this recipe"
             )
 
         await self.repository.delete(recipe)

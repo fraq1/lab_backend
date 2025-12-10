@@ -28,9 +28,8 @@ class PostService:
         """Update an existing post."""
         post = await self.repository.get_one(post_id)
         if not post:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Post with id {post_id} not found"
+            raise Exception(
+                f"Post with id {post_id} not found"
             )
 
         post.title = title
@@ -43,9 +42,8 @@ class PostService:
         """Delete a post."""
         post = await self.repository.get_one(post_id)
         if not post:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Post with id {post_id} not found"
+            raise Exception(
+                f"Post with id {post_id} not found"
             )
         await self.repository.delete(post)
         await self.uow.commit()
