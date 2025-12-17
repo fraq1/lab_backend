@@ -66,9 +66,21 @@ async def recipes_by_ingredient(
     ),
     queries: Annotated[IngredientQueries, Depends(IngredientQueries)] = None,
 ):
-    
-    select_set = parse_select_fields(select_fields)
+    try:
+        print(f"[DEBUG] ingredient_id={ingredient_id}, include={include}, select_fields={select_fields}")
 
-    include_set = parse_include(include)
+        select_set = parse_select_fields(select_fields)
+        print(f"[DEBUG] select_set={select_set}")
 
-    return await queries.get_recipes_by_ingredient(ingredient_id, include_set, select_set)
+        include_set = parse_include(include)
+        print(f"[DEBUG] include_set={include_set}")
+
+        result = await queries.get_recipes_by_ingredient(ingredient_id, include_set, select_set)
+        print(f"[DEBUG] result={result}")
+
+        return result
+    except Exception as e:
+        print(f"[ERROR] Exception in recipes_by_ingredient: {e}")
+        import traceback
+        traceback.print_exc()
+        raise

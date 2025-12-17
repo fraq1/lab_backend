@@ -3,7 +3,7 @@ from fastapi import HTTPException, status
 SELECTABLE_FIELDS = {"id", "title", "description", "cooking_time", "difficulty"}
 
 def parse_select_fields(select_fields: str | None):
-    if select_fields is None:
+    if select_fields is None or select_fields.strip() == "":
         return SELECTABLE_FIELDS
 
     select_set = {part.strip() for part in select_fields.split(",") if part.strip()}
@@ -19,10 +19,10 @@ def parse_select_fields(select_fields: str | None):
 ALLOWED_INCLUDES = {"cuisine", "ingredients", "allergens"}
 
 def parse_include(include: str | None):
-    if include is None:
+    if include is None or include.strip() == "":
         return set()
 
-    include_set = {part.strip() for part in include.split(",")}
+    include_set = {part.strip() for part in include.split(",") if part.strip()}
     invalid = include_set - ALLOWED_INCLUDES
     if invalid:
         raise HTTPException(
