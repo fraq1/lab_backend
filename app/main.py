@@ -52,7 +52,7 @@ add_pagination(app)
 
 # Mount static files for media
 app.mount("/media", StaticFiles(directory="media"), name="media")
-setup_exception_handlers(main_app)
+#setup_exception_handlers(main_app)
 
 if __name__ == "__main__":
     uvicorn.run(

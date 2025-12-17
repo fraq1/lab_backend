@@ -1,6 +1,6 @@
 from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, status, Query, HTTPException
-from include import parse_select_fields, parse_include
+from .include import parse_select_fields, parse_include
 from config.config import settings
 from services import IngredientService
 from queries import IngredientQueries
